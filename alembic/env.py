@@ -1,0 +1,6 @@
+# alembic/env.py (혹은 마이그레이션 설정에 따라 추가)
+# ...
+from app.db.base import Base  # Base에 모든 model이 import되어 있다고 가정
+
+target_metadata = Base.metadata
+# ...

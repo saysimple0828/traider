@@ -1,0 +1,28 @@
+# TODO: 각 서비스 별 healthcheck 방법 선정한 뒤 적용
+# TODO: 테스트 후 각 서비스 리소스 할당 및 제한 적용 (deploy -> resources)
+# TODO: 테스트 후 각 서비스 개수 파악한 뒤 적용 (scale)
+version: "3.9"
+
+services:
+  edge-simulator:
+    container_name: edge-simulator
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      # - "/edge-simulator/data:/root/data"
+      - "${LOGPATH:?err}/edge-service-simulator:/root/logs"
+    ports:
+      - "8000:8000"
+    environment:
+      TZ: ${TIMEZONE:?err}
+      PYTHONDONTWRITEBYTECODE: 1
+    env_file:
+      - .env
+    # healthcheck:
+    #   test:
+    #     ["CMD", "curl", "-f", "http://localhost:8000/docs#", "||", "exit", "1"]
+    #   interval: 30s
+    #   timeout: 40s
+    #   retries: 3
+    #      start_period: 1m
