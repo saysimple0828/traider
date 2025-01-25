@@ -13,8 +13,9 @@ class Trades(SQLModel, table=True):
     quantity: Decimal
     price: Decimal
     fee: Decimal
-    trade_date: datetime
     profit_rate: Optional[Decimal] = None
-    a_value: Optional[Decimal] = None
-    b_value: Optional[Decimal] = None
-    c_value: Optional[int] = None
+    basis_point: Optional[Decimal] = None
+    profit: Optional[Decimal] = None
+    sell_cycle: Optional[int] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None

@@ -1,10 +1,17 @@
 # app/models/parameter.py
-from sqlalchemy import Column, Integer, String, DateTime, Numeric
-from app.db.base_class import Base
+from datetime import datetime
+from decimal import Decimal
+from typing import Optional
 
-class Parameters(Base):
-    id = Column(Integer, primary_key=True, index=True)
-    a_value = Column(Numeric(8,4))
-    b_value = Column(Numeric(8,4))
-    c_value = Column(Integer)
-    updated_at = Column(DateTime)
+from sqlmodel import Field, SQLModel
+
+
+class Parameters(SQLModel, table=True):
+    """a, b, c 파라미터 테이블"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    basis_point: Optional[Decimal] = None
+    profit: Optional[Decimal] = None
+    sell_cycle: Optional[int] = None
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime] = None
+    
