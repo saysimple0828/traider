@@ -1,29 +1,29 @@
 from psycopg2 import IntegrityError
 
 from app.api.error import Exception404, Exception409
-from app.crud.base import CRUDBase
-from app.models.preset import Preset
-from app.schemas.preset import PresetCreate, PresetUpdate
+from app.db.crud_base import CRUDBase
+from app.trade.models.trades import Trades
+from app.trade.schemas.trades import TradeCreate, TradeUpdate
 from app.utils.logger import make_logger
 
 logger = make_logger(__name__)
 
 
-class CRUDBuy(CRUDBase[Preset, PresetCreate, PresetUpdate]):
-    def create_preset(self, preset: PresetCreate) -> Preset:
+class CRUDTrades(CRUDBase[Trades, TradeCreate, TradeUpdate]):
+    def create_trade(self, trade: TradeCreate) -> Trades:
         try:
-            created_preset = self.create(obj_in=preset)
+            created_trade = self.create(obj_in=trade)
         except IntegrityError as e:
             logger.error(e)
-            raise Exception409(type="PresetAlreadyExists")
-        return created_preset
+            raise Exception409(type="tradeAlreadyExists")
+        return created_trade
 
-    def update_preset(self, preset_update: PresetUpdate) -> Preset:
-        preset = self.get_by_id(id=preset_update.id)
+    def update_trade(self, trade_update: TradeUpdate) -> Trades:
+        trade = self.get_by_id(id=trade_update.id)
 
-        if not preset:
-            raise Exception404(type="PresetDoesNotExists")
+        if not trade:
+            raise Exception404(type="tradeDoesNotExists")
 
-        logger.info(f"preset info: {preset_update}")
+        logger.info(f"trade info: {trade_update}")
 
-        return self.update(db_obj=preset, obj_in=preset_update)
+        return self.update(db_obj=trade, obj_in=trade_update)

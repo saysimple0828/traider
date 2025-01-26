@@ -1,29 +1,30 @@
 from psycopg2 import IntegrityError
 
 from app.api.error import Exception404, Exception409
-from app.crud.base import CRUDBase
-from app.models.preset import Preset
-from app.schemas.preset import PresetCreate, PresetUpdate
+from app.db.crud_base import CRUDBase
+from app.trade.models.parameters import Parameters
+from app.trade.schemas.parameters import ParametersCreate, ParametersUpdate
 from app.utils.logger import make_logger
 
 logger = make_logger(__name__)
 
 
-class CRUDBuy(CRUDBase[Preset, PresetCreate, PresetUpdate]):
-    def create_preset(self, preset: PresetCreate) -> Preset:
+class CRUDParameter(CRUDBase[Parameters, ParametersCreate, ParametersCreate]):
+
+    def create_parameter(self, parameter: ParametersCreate) -> Parameters:
         try:
-            created_preset = self.create(obj_in=preset)
+            created_parameter = self.create(obj_in=parameter)
         except IntegrityError as e:
             logger.error(e)
-            raise Exception409(type="PresetAlreadyExists")
-        return created_preset
+            raise Exception409(type="parameterAlreadyExists")
+        return created_parameter
 
-    def update_preset(self, preset_update: PresetUpdate) -> Preset:
-        preset = self.get_by_id(id=preset_update.id)
+    def update_parameter(self, parameter_update: ParametersUpdate) -> Parameters:
+        parameter = self.get_by_id(id=parameter_update.id)
 
-        if not preset:
-            raise Exception404(type="PresetDoesNotExists")
+        if not parameter:
+            raise Exception404(type="parameterDoesNotExists")
 
-        logger.info(f"preset info: {preset_update}")
+        logger.info(f"parameter info: {parameter_update}")
 
-        return self.update(db_obj=preset, obj_in=preset_update)
+        return self.update(db_obj=parameter, obj_in=parameter_update)

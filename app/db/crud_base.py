@@ -6,7 +6,7 @@ from sqlalchemy.orm.exc import UnmappedInstanceError
 from sqlmodel import SQLModel
 
 from app.api.error import Exception404
-from app.db.base_class import Base
+from app.db.base import Base
 from app.utils.logger import make_logger
 
 ModelType = TypeVar("ModelType", bound=Base)

@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.settings import settings
-from app.crud.crud import CRUD
+from app.db.crud import CRUD
 from app.db.init_db import init_db
 
 engine = create_engine(
